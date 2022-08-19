@@ -1,0 +1,173 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"> All Credit Loans from the Bank</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addLoan" type="submit">Add Loan</button>
+      </div>
+    </div>
+  </nav>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Loan ID</th>
+        <th scope="col">CustName</th>
+        <th scope="col">LoanType</th>
+        <th scope="col">Currency</th>
+        <th scope="col">loanAmount</th>
+        <th scope="col">loanDueAmount</th>
+        <th scope="col">IntRate</th>
+        <th scope="col">TotalEMIs</th>
+        <th scope="col">PendingEMIs</th>
+        <th scope="col">LStartDate</th>
+        <th scope="col">LEndDate</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let loan of loanList">
+        <td><a (click)="getLoanDetails(loan.loanId)">{{loan.loanId}}</a></td>
+        <td>{{loan.customerId}}</td>
+        <td>{{loan.loanType}}</td>
+        <td>{{loan.currency}}</td>
+        <td>{{loan.loanAmount}}</td>
+        <td>{{loan.loanPendingAmount}}</td>
+        <td>{{loan.interestRate}}</td>
+        <td>{{loan.totalInstalments}}</td>
+        <td>{{loan.remainingInstalments}}</td>
+        <td>{{loan.loanStartDate}}</td>
+        <td>{{loan.loanEndDate}}</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detailLoan" (click)="detailLoan(loan.loanId)">Details</button>
+            <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editLoan" (click)="editLoan(loan)">Edit</button>
+            <button type="button" class="btn btn-outline-danger" (click)="deleteLoan(loan)">Delete</button>
+        </td>
+
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="modal fade" id="addLoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Loan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <form [formGroup]="LoanFormDetail">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">CustomerNO </label>
+                    <input type="text" formControlName="customerId" class="form-control" id="customerId" aria-describedby="emailHelp">
+                  </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">LoanType </label>
+                  <input type="text" formControlName="loanType" class="form-control" id="loanType" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Currency </label>
+                    <input type="text" formControlName="currency" class="form-control" id="currency" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">LoanAmount </label>
+                    <input type="text" formControlName="loanAmount" class="form-control" id="loanAmount" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">LoanPendingAmount </label>
+                    <input type="text" formControlName="loanPendingAmount" class="form-control" id="loanPendingAmount" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">InterestRate </label>
+                    <input type="text" formControlName="interestRate" class="form-control" id="interestRate" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">TotalInstalments </label>
+                    <input type="text" formControlName="totalInstalments" class="form-control" id="totalInstalments" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">RemainingInstalments </label>
+                    <input type="text" formControlName="remainingInstalments" class="form-control" id="remainingInstalments" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">LoanStartDate </label>
+                    <input type="text" formControlName="loanStartDate" class="form-control" id="loanStartDate" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">LoanEndDate </label>
+                    <input type="text" formControlName="loanEndDate" class="form-control" id="loanEndDate" aria-describedby="emailHelp">
+                  </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addLoan()">Add Loan</button>
+                  </div>
+            </form>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--Details window-->
+  <div class="modal fade" id="detailLoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Loan Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Loan ID</th>
+              <th scope="col">LoanType</th>
+              <th scope="col">Currency</th>
+              <th scope="col">loanEMIAmt</th>
+              <th scope="col">LoanPayDate</th>
+            </tr>
+          </thead>
+          <tbody>
+           <!-- <tr *ngFor="let loan of loanList">
+              <td>{{loan.loanId}}</td>
+              <td>{{loan.loanType}}</td>
+              <td>{{loan.currency}}</td>
+              <td>{{loan.loanAmount}}</td>
+              <td>{{loan.loanPendingAmount}}</td>
+              <td>{{loan.loanStartDate}}</td>
+            </tr>-->
+            <tr>
+              <td>8</td>
+              <td>Balance Transfer</td>
+              <td>SGD</td>
+              <td>1000</td>
+              <td>30-05-2022</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>Balance Transfer</td>
+              <td>SGD</td>
+              <td>1000</td>
+              <td>30-06-2022</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>Balance Transfer</td>
+              <td>SGD</td>
+              <td>1000</td>
+              <td>30-07-2022</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
